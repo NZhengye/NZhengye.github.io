@@ -1,19 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>NZhengye's Personal Website</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zhengye Yu | STA323 Project 1</title>
+  <style>
+    :root { --bg:#f6f8fb; --card:#ffffff; --ink:#172033; --muted:#5d6b82; --accent:#2563eb; --line:#d9e2ef; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; color:var(--ink); background:var(--bg); line-height:1.65; }
+    header { background: linear-gradient(135deg, #1d4ed8, #0f172a); color:white; padding:56px 20px; }
+    .wrap { max-width:1000px; margin:0 auto; }
+    .eyebrow { letter-spacing:.08em; text-transform:uppercase; font-size:.82rem; color:#bfdbfe; font-weight:700; }
+    h1 { margin:12px 0 8px; font-size:clamp(2rem, 5vw, 3.2rem); line-height:1.1; }
+    h2 { margin-top:0; font-size:1.45rem; }
+    .subtitle { max-width:760px; font-size:1.05rem; color:#dbeafe; }
+    main { padding:28px 20px 56px; }
+    .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:18px; margin-top:20px; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:18px; padding:22px; box-shadow:0 8px 24px rgba(15, 23, 42, .06); }
+    .meta { color:var(--muted); font-size:.95rem; }
+    .btn { display:inline-block; margin-top:10px; background:var(--accent); color:white; text-decoration:none; padding:10px 14px; border-radius:12px; font-weight:700; }
+    .btn.secondary { background:#e8eefc; color:#1d4ed8; }
+    ul { padding-left:1.2rem; }
+    footer { border-top:1px solid var(--line); color:var(--muted); padding:22px 20px; background:white; }
+    code { background:#eef2ff; padding:2px 5px; border-radius:6px; }
+  </style>
 </head>
 <body>
-  <h1>Welcome to My Personal Website</h1>
-
-  <p>This website is created using GitHub Pages and a custom domain for STA323 Project 1.</p>
-
-  <h2>Blog</h2>
-  <p>
-    <a href="survival-analysis-report.html">
-      Survival Analysis Report
-    </a>
-  </p>
+  <header>
+    <div class="wrap">
+      <div class="eyebrow">STA323 Project 1 · GitHub Pages</div>
+      <h1>Zhengye Yu's Personal Website</h1>
+      <p class="subtitle">This site was created for STA323 Big Data Analysis Software and Application. It is hosted with GitHub Pages and deployed on a custom personal domain obtained through the GitHub Student Developer Pack.</p>
+    </div>
+  </header>
+  <main class="wrap">
+    <section class="grid">
+      <article class="card">
+        <h2>Project Blog</h2>
+        <p class="meta">Q2 Task (2): Survival analysis report</p>
+        <p>The blog post explains the survival-analysis workflow for the Telco Customer Churn dataset, including preprocessing, Kaplan–Meier analysis, Cox proportional hazards modeling, AFT modeling, and customer lifetime value estimation.</p>
+        <a class="btn" href="survival-analysis-report.html">Read the survival analysis report</a>
+      </article>
+      <article class="card">
+        <h2>Deployment Information</h2>
+        <ul>
+          <li>Repository: <code>NZhengye/NZhengye.github.io</code></li>
+          <li>Hosting platform: GitHub Pages</li>
+          <li>Custom domain: <code>zhengye001.me</code></li>
+          <li>Domain provider: Namecheap for Education</li>
+        </ul>
+      </article>
+    </section>
+    <section class="card" style="margin-top:18px;">
+      <h2>About This Website</h2>
+      <p>This website is a lightweight static site. It provides evidence that the personal domain has been connected to GitHub Pages, and it publishes the data-analysis report required by the project. The content focuses on the survival-analysis part of the project because the assignment asks for a blog that includes the Q2 Task (2) report.</p>
+      <a class="btn secondary" href="https://github.com/NZhengye/NZhengye.github.io">View repository</a>
+    </section>
+  </main>
+  <footer>
+    <div class="wrap">© 2026 Zhengye Yu · STA323 Project 1</div>
+  </footer>
 </body>
 </html>
