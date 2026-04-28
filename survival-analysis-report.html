@@ -1,42 +1,110 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Survival Analysis Report</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Survival Analysis Report | STA323 Project 1</title>
+  <style>
+    :root { --bg:#f7f8fb; --card:#ffffff; --ink:#1f2937; --muted:#64748b; --accent:#2563eb; --line:#d9e2ef; --soft:#eff6ff; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; color:var(--ink); background:var(--bg); line-height:1.72; }
+    header { background:linear-gradient(135deg,#0f172a,#1d4ed8); color:white; padding:44px 20px; }
+    .wrap { max-width:1040px; margin:0 auto; }
+    .eyebrow { letter-spacing:.08em; text-transform:uppercase; color:#bfdbfe; font-weight:700; font-size:.82rem; }
+    h1 { margin:10px 0 8px; font-size:clamp(2rem,4.5vw,3rem); line-height:1.15; }
+    h2 { border-bottom:1px solid var(--line); padding-bottom:6px; margin-top:36px; }
+    .subtitle { color:#dbeafe; max-width:780px; }
+    main { padding:28px 20px 60px; }
+    article { background:var(--card); border:1px solid var(--line); border-radius:20px; padding:26px; box-shadow:0 8px 24px rgba(15,23,42,.06); }
+    .summary { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:14px; margin:18px 0 10px; }
+    .stat { background:var(--soft); border:1px solid #dbeafe; border-radius:16px; padding:14px; }
+    .stat strong { display:block; font-size:1.4rem; color:#1d4ed8; }
+    table { width:100%; border-collapse:collapse; margin:14px 0 24px; }
+    th, td { padding:10px 12px; border-bottom:1px solid var(--line); text-align:left; }
+    th { background:#eef2ff; }
+    code { background:#eef2ff; padding:2px 5px; border-radius:6px; }
+    .note { background:#fff7ed; border-left:4px solid #f97316; padding:12px 14px; border-radius:10px; }
+    a { color:var(--accent); }
+    .back { display:inline-block; margin-bottom:18px; text-decoration:none; font-weight:700; }
+    footer { color:var(--muted); padding-top:24px; }
+  </style>
 </head>
 <body>
-  <h1>Survival Analysis Report</h1>
-
-  <h2>1. Introduction</h2>
-  <p>
-    This blog summarizes the survival analysis process in Q2 Task (2).
-  </p>
-
-  <h2>2. Dataset and Objective</h2>
-  <p>
-    The objective of this task is to understand the process of survival analysis and record the results from the Spark case study.
-  </p>
-
-  <h2>3. Data Preprocessing</h2>
-  <p>
-    Describe how the dataset was loaded, cleaned, and transformed before survival analysis.
-  </p>
-
-  <h2>4. Survival Analysis Process</h2>
-  <p>
-    Explain the key steps, including defining duration, event indicator, and model variables.
-  </p>
-
-  <h2>5. Results</h2>
-  <p>
-    Insert your main results, tables, and model interpretation here.
-  </p>
-
-  <h2>6. Conclusion</h2>
-  <p>
-    Summarize the findings from the survival analysis.
-  </p>
-
-  <p><a href="index.html">Back to homepage</a></p>
+  <header><div class="wrap">
+    <div class="eyebrow">STA323 Project 1 · Q2 Task (2)</div>
+    <h1>Survival Analysis Report</h1>
+    <p class="subtitle">A blog summary of the Spark-based survival-analysis case study on customer churn, including event definition, Kaplan–Meier estimation, Cox modeling, AFT modeling, and customer lifetime value analysis.</p>
+  </div></header>
+  <main class="wrap">
+    <a class="back" href="index.html">← Back to homepage</a>
+    <article>
+      <h2>1. Overview</h2>
+      <p>Survival analysis studies the time until an event occurs while handling censored observations. In this project, customer <code>tenure</code> is used as the duration variable, and customer churn is treated as the event of interest. A record with <code>Churn = Yes</code> is an observed event, while <code>Churn = No</code> is right-censored.</p>
+      <p>Compared with ordinary churn classification, survival analysis is more informative because it uses both event occurrence and event timing.</p>
+      <h2>2. Dataset and Preprocessing</h2>
+      <p>The analysis follows the Spark survival-analysis tutorial with the Telco Customer Churn dataset. The cohort was restricted to month-to-month customers with internet service. The event indicator is defined as <code>1</code> for churned customers and <code>0</code> for censored customers.</p>
+      <div class="summary">
+        <div class="stat"><strong>7,043</strong>raw records</div>
+        <div class="stat"><strong>3,351</strong>analysis-cohort records</div>
+        <div class="stat"><strong>1,556</strong>observed churn events</div>
+        <div class="stat"><strong>46.43%</strong>cohort churn rate</div>
+      </div>
+      <table><thead><tr><th>Item</th><th>Value</th></tr></thead><tbody>
+        <tr><td>Rows in raw dataset</td><td>7043</td></tr>
+        <tr><td>Rows in analysis cohort</td><td>3351</td></tr>
+        <tr><td>Churned customers in cohort</td><td>1556</td></tr>
+        <tr><td>Non-churned customers in cohort</td><td>1795</td></tr>
+        <tr><td>Mean tenure in cohort</td><td>19.43 months</td></tr>
+        <tr><td>Median tenure in cohort</td><td>13 months</td></tr>
+        <tr><td>Mean monthly charges</td><td>73.59</td></tr>
+      </tbody></table>
+      <table><thead><tr><th>Churn indicator</th><th>Customer count</th><th>Avg. tenure</th><th>Avg. monthly charges</th></tr></thead><tbody>
+        <tr><td>0 (censored)</td><td>1795</td><td>23.62</td><td>71.17</td></tr>
+        <tr><td>1 (churned)</td><td>1556</td><td>14.60</td><td>76.38</td></tr>
+      </tbody></table>
+      <h2>3. Kaplan–Meier Survival Analysis</h2>
+      <p>The Kaplan–Meier estimator was used to estimate the customer survival function over tenure months. The overall median survival time of the filtered cohort was 34 months.</p>
+      <table><thead><tr><th>Result</th><th>Statistic / value</th><th>p-value</th></tr></thead><tbody>
+        <tr><td>Overall median survival time</td><td>34 months</td><td>—</td></tr>
+        <tr><td>Gender log-rank test</td><td>2.0389</td><td>0.1533</td></tr>
+        <tr><td>OnlineSecurity log-rank test</td><td>141.6032</td><td>1.19 × 10<sup>−32</sup></td></tr>
+      </tbody></table>
+      <p>The gender difference was not statistically significant, while <code>OnlineSecurity</code> created a very strong separation in survival experience.</p>
+      <h2>4. Cox Proportional Hazards Model</h2>
+      <p>The Cox model estimates how covariates affect churn hazard. A hazard ratio below 1 indicates lower churn risk.</p>
+      <table><thead><tr><th>Covariate</th><th>Coefficient</th><th>Hazard ratio</th><th>p-value</th></tr></thead><tbody>
+        <tr><td><code>dependents_Yes</code></td><td>-0.33</td><td>0.72</td><td>&lt; 0.005</td></tr>
+        <tr><td><code>internetService_DSL</code></td><td>-0.22</td><td>0.80</td><td>&lt; 0.005</td></tr>
+        <tr><td><code>onlineBackup_Yes</code></td><td>-0.78</td><td>0.46</td><td>&lt; 0.005</td></tr>
+        <tr><td><code>techSupport_Yes</code></td><td>-0.64</td><td>0.53</td><td>&lt; 0.005</td></tr>
+      </tbody></table>
+      <p>The most protective variables in this Cox model were <code>onlineBackup_Yes</code> and <code>techSupport_Yes</code>.</p>
+      <p class="note">The proportional hazards assumption check suggested possible non-proportional behavior for some variables, so the Cox model should be interpreted as useful but not assumption-perfect.</p>
+      <h2>5. Accelerated Failure Time Model</h2>
+      <p>The log-logistic AFT model describes how covariates accelerate or decelerate time until churn. In this model, <code>exp(coef)</code> greater than 1 suggests longer time until churn.</p>
+      <table><thead><tr><th>Covariate</th><th>Coefficient</th><th>exp(coef)</th><th>p-value</th></tr></thead><tbody>
+        <tr><td><code>internetService_DSL</code></td><td>0.38</td><td>1.47</td><td>&lt; 0.005</td></tr>
+        <tr><td><code>onlineSecurity_Yes</code></td><td>0.86</td><td>2.37</td><td>&lt; 0.005</td></tr>
+        <tr><td><code>onlineBackup_Yes</code></td><td>0.81</td><td>2.25</td><td>&lt; 0.005</td></tr>
+        <tr><td><code>techSupport_Yes</code></td><td>0.69</td><td>1.99</td><td>&lt; 0.005</td></tr>
+      </tbody></table>
+      <h2>6. Customer Lifetime Value</h2>
+      <p>The survival model was also used to estimate expected customer lifetime value. Predicted survival probabilities were multiplied by monthly profit and discounted over time.</p>
+      <table><thead><tr><th>Contract month</th><th>Survival probability</th><th>Discounted expected profit</th><th>Cumulative NPV</th></tr></thead><tbody>
+        <tr><td>1</td><td>0.9481</td><td>28.21</td><td>28.21</td></tr>
+        <tr><td>12</td><td>0.8137</td><td>22.10</td><td>297.51</td></tr>
+        <tr><td>24</td><td>0.7235</td><td>17.78</td><td>533.25</td></tr>
+      </tbody></table>
+      <h2>7. Main Findings</h2>
+      <ol>
+        <li>The filtered cohort has a high churn rate of 46.43%, so it is a suitable high-risk segment for survival modeling.</li>
+        <li>Churned customers have shorter average tenure than censored customers.</li>
+        <li><code>OnlineSecurity</code> is strongly associated with better survival, while gender is not significant.</li>
+        <li><code>TechSupport</code> and <code>OnlineBackup</code> are associated with lower churn hazard.</li>
+        <li><code>OnlineSecurity</code> and <code>TechSupport</code> increase estimated time until churn in the AFT model.</li>
+      </ol>
+    </article>
+    <footer>Published for STA323 Project 1 · GitHub Pages custom domain: <code>zhengye001.me</code></footer>
+  </main>
 </body>
 </html>
